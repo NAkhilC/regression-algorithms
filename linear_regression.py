@@ -4,7 +4,7 @@ from sklearn.metrics import r2_score, root_mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from custom_regression_model import CustomRegression
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
 class InitializationClass:
@@ -77,3 +77,25 @@ class CustomLinearRegression:
 
         print(
             f"\nMy Model  -> R²: {my_r2:.4f} | RMSE: ${my_rmse:,.2f} | ${CustomRegressionModel.predict(new_house_scaled)}")
+
+
+class PolynomialLinearRegression:
+    def __init__(self):
+        self.data = pd.read_csv('housing-data.csv')
+        X = self.data.drop(columns=['price'])
+        y = self.data['price']
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+        poly = PolynomialFeatures(degree=2)
+        X_train_poly = poly.fit_transform(X_train)   # fit + transform on TRAIN
+        X_test_poly = poly.transform(X_test)
+        model = LinearRegression()
+        model.fit(X_train_poly, y_train)
+        y_pred = model.predict(X_test_poly)
+        print(f"R²:   {r2_score(y_test, y_pred):.4f}")
+        print(f"RMSE: {root_mean_squared_error(y_test, y_pred):.2f}")
+        new_fertilizer = np.array(InitializationClass().new_house)
+        new_fertilizer_poly = poly.transform(new_fertilizer)
+        predicted_yield = model.predict(new_fertilizer_poly)
+        print(f"Predicted value: {predicted_yield[0]:.2f} kg")

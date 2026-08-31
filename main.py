@@ -1,7 +1,8 @@
 
-from linear_regression import LinearRegressionModel, MultipleLinearRegression, CustomLinearRegression
+from linear_regression import LinearRegressionModel, MultipleLinearRegression, CustomLinearRegression, PolynomialLinearRegression
 
 
-# LinearRegressionModel().startModel()
+LinearRegressionModel().startModel()
 MultipleLinearRegression()
 CustomLinearRegression()
+PolynomialLinearRegression()
